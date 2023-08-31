@@ -1,48 +1,41 @@
-const Drawer = () => {
+const Drawer = ({ onClose, items = [] }) => {
   return (
-    <div className="overlay" style={{ display: "none" }}>
+    <div className="overlay">
       <div className="drawer">
         <div className="items">
           <h2 className="mb-20 d-flex justify-between ">
             Корзина
-            <img src="/images/remove.svg" alt="remove" className="cu-p" />
+            <img
+              src="/images/remove.svg"
+              alt="remove"
+              className="cu-p"
+              onClick={onClose}
+            />
           </h2>
 
-          <div className="cart-item d-flex align-center mb-20">
-            <img
-              className="mr-20 ml-5"
-              src="/images/sneakers/sn-1.jpg"
-              width={70}
-              height={70}
-              alt="sneakers"
-            />
-            <div className="mr-20">
-              <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-              <b>12 999 руб.</b>
-            </div>
-            <img
-              src="/images/remove.svg"
-              alt="remove"
-              className="button__remove"
-            />
-          </div>
-          <div className="cart-item d-flex align-center mb-20">
-            <img
-              className="mr-20 ml-5"
-              src="/images/sneakers/sn-1.jpg"
-              width={70}
-              height={70}
-              alt="sneakers"
-            />
-            <div className="mr-20">
-              <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-              <b>12 999 руб.</b>
-            </div>
-            <img
-              src="/images/remove.svg"
-              alt="remove"
-              className="button__remove"
-            />
+          <div className="items">
+            {items.map((obj) => {
+              return (
+                <div className="cart-item d-flex align-center mb-20">
+                  <img
+                    className="mr-20 ml-5"
+                    src={obj.image}
+                    width={70}
+                    height={70}
+                    alt="sneakers"
+                  />
+                  <div className="mr-20">
+                    <p className="mb-5">{obj.name}</p>
+                    <b>{obj.price} руб.</b>
+                  </div>
+                  <img
+                    src="/images/remove.svg"
+                    alt="remove"
+                    className="button__remove"
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="cart__total-block">
