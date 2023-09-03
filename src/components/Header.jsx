@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import React from "react";
+import Context from "../Context";
 
 const Header = ({ onOpen }) => {
+  const { cartItems } = React.useContext(Context);
+  const totalCartPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0);
   return (
     <header className="d-flex justify-between align-center p-40">
       <div className="d-flex align-center">
@@ -22,7 +26,7 @@ const Header = ({ onOpen }) => {
             onClick={onOpen}
             className="cu-p"
           />
-          <span> 1205 руб.</span>
+          <span> {totalCartPrice} руб.</span>
         </li>
         <li>
           <Link to="/favorite">

@@ -38,9 +38,9 @@ const Home = ({
             return (
               <Card
                 key={index}
-                {...card}
                 onPlus={(obj) => onAddToCart(obj)}
                 onFavorite={(obj) => onAddFavorite(obj)}
+                {...card}
               />
             );
           })}

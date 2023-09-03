@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Card.module.scss";
+import Context from "../../Context";
 
 const Card = ({
   id,
@@ -10,17 +11,17 @@ const Card = ({
   onFavorite,
   favorite = false,
 }) => {
-  const [isAdded, setIsAdded] = React.useState(false);
+  const { hasItemInCart } = React.useContext(Context);
   const [isFavorite, setIsFavorite] = React.useState(favorite);
+  const obj = { name, price, image, id, parentId: id };
 
   const addCard = () => {
-    setIsAdded((isAdded) => !isAdded);
-    onPlus({ name, price, image, id });
+    onPlus(obj);
   };
 
   const addToFavorite = () => {
     setIsFavorite((isFavorite) => !isFavorite);
-    onFavorite({ name, price, image, id });
+    onFavorite(obj);
   };
 
   return (
@@ -42,7 +43,9 @@ const Card = ({
         </div>
         <img
           className={styles.plus}
-          src={isAdded ? "/images/checked.svg" : "/images/plus-btn.svg"}
+          src={
+            hasItemInCart(id) ? "/images/checked.svg" : "/images/plus-btn.svg"
+          }
           alt="plus"
           onClick={addCard}
         />

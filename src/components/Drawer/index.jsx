@@ -1,6 +1,18 @@
-const Drawer = ({ onClose, onDelete, items = [] }) => {
+import Info from "../Info";
+import Context from "../../Context";
+import React from "react";
+import styles from "./Drawer.module.scss";
+const Drawer = ({ onClose, onDelete, items = [], opened }) => {
+  const { setCartItems, cartItems } = React.useContext(Context);
+  const [isOrderCompleted, setIsOrderCompleted] = React.useState(false);
+  const totalCartPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0);
+
+  const onClickOrder = () => {
+    setIsOrderCompleted(true);
+    setCartItems([]);
+  };
   return (
-    <div className="overlay">
+    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
       <div className="drawer">
         <div className="items">
           <h2 className="mb-20 d-flex justify-between ">
@@ -18,7 +30,10 @@ const Drawer = ({ onClose, onDelete, items = [] }) => {
               <div className="items">
                 {items.map((obj) => {
                   return (
-                    <div className="cart-item d-flex align-center mb-20">
+                    <div
+                      key={obj.id}
+                      className="cart-item d-flex align-center mb-20"
+                    >
                       <img
                         className="mr-20 ml-5"
                         src={obj.image}
@@ -46,34 +61,34 @@ const Drawer = ({ onClose, onDelete, items = [] }) => {
                   <li className="d-flex">
                     <span>Итого: </span>
                     <div></div>
-                    <b> 21 498 руб.</b>
+                    <b> {totalCartPrice} руб.</b>
                   </li>
                   <li className="d-flex">
                     <span> Налог 5%: </span>
                     <div></div>
-                    <b>1074 руб.</b>
+                    <b>{(totalCartPrice / 100) * 5} руб.</b>
                   </li>
                 </ul>
-                <button className="button__green">
-                  Оформить заказ <img src="/images/arrow.svg" alt="arrow" />
+                <button onClick={onClickOrder} className="button__green">
+                  Оформить заказ
+                  <img src="/images/arrow.svg" alt="arrow" />
                 </button>
               </div>
             </div>
           ) : (
-            <div className="d-flex align-center justify-between flex-column ">
-              <img
-                src="/images/empty-cart.png"
-                alt="empty-cart"
-                width={120}
-                height={120}
-              />
-              <h2>Корзина пустая</h2>
-              <p className="opacity-6">Ваша корзина пуста</p>
-              <button className="button__green" onClick={onClose}>
-                <img src="/images/arrow-back.svg" alt="arrow-back" />
-                Вернуться назад
-              </button>
-            </div>
+            <Info
+              title={isOrderCompleted ? "Заказ оформлен!" : "Корзина пустая"}
+              description={
+                isOrderCompleted
+                  ? "Ваш заказ скоро будет передан курьерской службе"
+                  : "Ваша корзина пуста"
+              }
+              image={
+                isOrderCompleted
+                  ? "/images/c-order.png"
+                  : "/images/empty-cart.png"
+              }
+            />
           )}
         </div>
       </div>
